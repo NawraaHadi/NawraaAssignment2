@@ -7,7 +7,10 @@ $response = file_get_contents($url);
 $data = json_decode($response, true);
 
 // extract the results if available
-$result = $data["results"]?? [];
+if(!$data || !isset($data ["results"])){
+    die('Error fatching the data from the API')
+}
+$result = $data["results"];
 
 ?>
 <!DOCTYPE html>
@@ -17,7 +20,7 @@ $result = $data["results"]?? [];
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Enrollment Data</title>
     <!-- Pico CSS for styling the table -->
-    <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@1.*/css/pico.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
     </head>
     <body>
         <main class="container">
@@ -37,13 +40,13 @@ $result = $data["results"]?? [];
                 </tr>
             </thead>
             <tbody>
-                <?php if (empty($records)): ?>
+                <?php if (empty($result)): ?>
                     <tr class="no-data">
-                        <td colspan="6">No data available for the specified filters.</td>
+                        <td colspan="6">No data available for the specified filters!</td>
                     </tr>
                 <?php else: ?>
-                    <?php foreach ($records as $reco): ?>
-                        <?php $fields = $reco ?? [];?>
+                    <?php foreach ($result as $records): ?>
+                        <?php $fields = $records ?? [];?>
                 <tr>
                     <!-- use htmlspecialchars to prevent XSS -->
                     <td><?= htmlspecialchars($fields['year'] ?? 'N/A') ?></td>
