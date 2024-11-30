@@ -7,9 +7,6 @@ $response = file_get_contents($url);
 $data = json_decode($response, true);
 
 // extract the results if available
-if(!$data || !isset($data ["results"])){
-    die('Error fatching the data from the API')
-}
 $result = $data["results"];
 
 ?>
